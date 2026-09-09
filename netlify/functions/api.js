@@ -67,7 +67,7 @@ exports.handler = async (event) => {
       const clauses = [], args = [];
       for (const [key, value] of Object.entries(filters)) {
         if (!(TABLES[table].includes(key) || key === 'id')) return response(400, { error: 'Invalid filter.' });
-        clauses.push(`${key} = ?`); args.push(value);
+        args.push(value); clauses.push(`${key} = $${args.length}`);
       }
       const orderColumn = TABLES[table].includes(order?.column) || order?.column === 'id' || order?.column === 'uploaded_at' ? order.column : 'id';
       const rows = await client(`SELECT * FROM ${table}${clauses.length ? ` WHERE ${clauses.join(' AND ')}` : ''} ORDER BY ${orderColumn} ${order?.ascending === false ? 'DESC' : 'ASC'}`, args);
@@ -80,17 +80,17 @@ exports.handler = async (event) => {
       const fields = safeFields(table, values);
       const names = Object.keys(fields);
       if (!names.length) return response(400, { error: 'No valid values.' });
-      const rows = await client(`INSERT INTO ${table} (${names.join(', ')}) VALUES (${names.map(() => '?').join(', ')}) RETURNING *`, Object.values(fields));
+      const rows = await client(`INSERT INTO ${table} (${names.join(', ')}) VALUES (${names.map((_, index) => `$${index + 1}`).join(', ')}) RETURNING *`, Object.values(fields));
       return response(200, { data: rows });
     }
     if (action === 'update') {
       const fields = safeFields(table, values), names = Object.keys(fields);
       if (!names.length || !Number.isInteger(id)) return response(400, { error: 'Invalid update.' });
-      await client(`UPDATE ${table} SET ${names.map((name) => `${name} = ?`).join(', ')} WHERE id = ?`, [...Object.values(fields), id]);
+      await client(`UPDATE ${table} SET ${names.map((name, index) => `${name} = $${index + 1}`).join(', ')} WHERE id = $${names.length + 1}`, [...Object.values(fields), id]);
       return response(200, { data: [] });
     }
     if (action === 'delete' && Number.isInteger(id)) {
-      await client(`DELETE FROM ${table} WHERE id = ?`, [id]);
+      await client(`DELETE FROM ${table} WHERE id = $1`, [id]);
       return response(200, { data: [] });
     }
     return response(400, { error: 'Unknown action.' });
