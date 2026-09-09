@@ -38,6 +38,22 @@ function passwordMatchesHash(password, storedHash) {
 function response(statusCode, payload) {
   return { statusCode, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }, body: JSON.stringify(payload) };
 }
+function imageKitAuth() {
+  const { IMAGEKIT_PRIVATE_KEY: privateKey, IMAGEKIT_PUBLIC_KEY: publicKey } = process.env;
+  if (!privateKey || !publicKey) throw new Error('ImageKit is not configured.');
+  const token = crypto.randomUUID();
+  const expire = Math.floor(Date.now() / 1000) + 15 * 60;
+  const signature = crypto.createHmac('sha1', privateKey).update(`${token}${expire}`).digest('hex');
+  return { token, expire, signature, publicKey };
+}
+async function removeImageKitFile(fileId) {
+  const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
+  if (!privateKey) throw new Error('ImageKit is not configured.');
+  if (!fileId || fileId.length > 300) throw new Error('Invalid image identifier.');
+  const authorization = Buffer.from(`${privateKey}:`).toString('base64');
+  const result = await fetch(`https://api.imagekit.io/v1/files/${encodeURIComponent(fileId)}`, { method: 'DELETE', headers: { Authorization: `Basic ${authorization}` } });
+  if (!result.ok && result.status !== 404) throw new Error('ImageKit could not delete the image.');
+}
 function safeFields(table, values) {
   const allowed = TABLES[table];
   if (!allowed) throw new Error('Unknown table.');
@@ -75,6 +91,11 @@ exports.handler = async (event) => {
     }
 
     if (!authenticated(event.headers)) return response(401, { error: 'Unauthorized' });
+    if (action === 'imagekit_auth') return response(200, imageKitAuth());
+    if (action === 'delete_image') {
+      await removeImageKitFile(String(input.fileId || ''));
+      return response(200, { data: [] });
+    }
     if (!TABLES[table]) return response(400, { error: 'Unknown table.' });
     if (action === 'insert') {
       const fields = safeFields(table, values);

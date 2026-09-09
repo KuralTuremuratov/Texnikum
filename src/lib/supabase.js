@@ -42,5 +42,31 @@ export const supabase = {
     signOut: async () => { sessionStorage.removeItem(tokenKey); notify(); },
     onAuthStateChange: (callback) => { listeners.add(callback); return { data: { subscription: { unsubscribe: () => listeners.delete(callback) } } }; },
   },
-  storage: { from: () => ({ upload: async () => ({ error: new Error('Cloudinary is not configured yet.') }), getPublicUrl: () => ({ data: null }), remove: async () => ({ error: null }) }) },
+  storage: {
+    from: () => ({
+      upload: async (_fileName, file) => {
+        try {
+          const auth = await request({ action: 'imagekit_auth' });
+          const form = new FormData();
+          form.append('file', file);
+          form.append('fileName', _fileName);
+          form.append('folder', '/texnikum-gallery');
+          form.append('publicKey', auth.publicKey);
+          form.append('token', auth.token);
+          form.append('signature', auth.signature);
+          form.append('expire', String(auth.expire));
+          const response = await fetch('https://upload.imagekit.io/api/v1/files/upload', { method: 'POST', body: form });
+          const result = await response.json();
+          if (!response.ok) return { error: new Error(result.message || 'ImageKit upload failed.') };
+          return { data: { path: result.fileId, publicUrl: result.url }, error: null };
+        } catch {
+          return { error: new Error('ImageKit bilan ulanishda xatolik.') };
+        }
+      },
+      getPublicUrl: () => ({ data: null }),
+      remove: async ([fileId]) => {
+        try { await request({ action: 'delete_image', fileId }); return { error: null }; } catch (error) { return { error }; }
+      },
+    }),
+  },
 };

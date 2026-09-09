@@ -234,17 +234,16 @@ const Admin = () => {
         return
       }
       console.log("Fayl muvaffaqiyatli yuklandi:", uploadData)
-      const { data: urlData } = supabase.storage.from("gallery").getPublicUrl(fileName)
-      if (!urlData || !urlData.publicUrl) {
+      if (!uploadData || !uploadData.publicUrl) {
         alert("Rasm URL sini olishda xatolik")
         return
       }
-      console.log("Ommaviy URL:", urlData.publicUrl)
+      console.log("Ommaviy URL:", uploadData.publicUrl)
       const newImage = {
         title: `Rasm ${new Date().toLocaleDateString()}`,
         description: "Yangi rasm",
-        image_url: urlData.publicUrl,
-        image_path: fileName,
+        image_url: uploadData.publicUrl,
+        image_path: uploadData.path,
         is_active: true,
       }
       console.log("Ma'lumotlar bazasiga saqlash:", newImage)
