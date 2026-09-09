@@ -25,28 +25,24 @@ const Admin = () => {
         navigate("/login", { replace: true })
         return
       }
-      checkUser()
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser()
+        if (error || !user) {
+          navigate("/login", { replace: true })
+          return
+        }
+        setUser(user)
+      } catch (error) {
+        console.error("Foydalanuvchini tekshirishda xatolik:", error)
+        navigate("/login", { replace: true })
+        return
+      } finally {
+        setLoading(false)
+      }
       loadData()
     }
     checkSession()
   }, [navigate])
-
-  const checkUser = async () => {
-    try {
-      const { data: { user }, error } = await supabase.auth.getUser()
-      if (error || !user) {
-        console.log("Foydalanuvchi autentifikatsiya qilinmagan, /login ga yo'naltirish")
-        navigate("/login", { replace: true })
-        return
-      }
-      setUser(user)
-    } catch (error) {
-      console.error("Foydalanuvchini tekshirishda xatolik:", error)
-      navigate("/login", { replace: true })
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const loadData = async () => {
     try {
