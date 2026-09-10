@@ -1512,16 +1512,67 @@ body.dark-theme .eyebrow { color: #ffc092; }
 .quick-icon.blue { color: var(--primary-accent); background: var(--primary-accent-light); }
 .quick-icon.orange { color: #d55c14; background: var(--accent-orange-light); }
 
-.programs-section { display: grid; grid-template-columns: 0.83fr 1.17fr; gap: clamp(35px, 9vw, 115px); padding-top: clamp(85px, 12vw, 145px); padding-bottom: clamp(85px, 12vw, 135px); }
-.section-intro h2, .visit-layout h2 { margin: 19px 0; display: block; font-size: clamp(2.3rem, 4vw, 4rem); line-height: 1.02; letter-spacing: -0.062em; }
-.section-intro h2::before, .visit-layout h2::before { display: none; }
-.section-intro h2 span { color: var(--primary-accent); }
-.section-intro p, .visit-layout p { max-width: 400px; color: var(--text-secondary); font-size: 1rem; line-height: 1.65; }
-.program-list { border-top: 1px solid var(--border-subtle); }
-.program-item { min-height: 92px; display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 16px; border-bottom: 1px solid var(--border-subtle); transition: color 0.2s, padding 0.2s; }
-.program-item:hover { color: var(--primary-accent); padding-left: 10px; }
-.program-number { color: var(--accent-orange); font-size: 0.77rem; font-weight: 900; }
-.program-item h3 { margin: 0; font-size: clamp(1.03rem, 1.7vw, 1.22rem); letter-spacing: -0.03em; line-height: 1.22; }
+.route-cards-section {
+  background: var(--bg-secondary);
+  padding: clamp(42px, 7vw, 78px) 0;
+}
+
+.route-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 4vw, 38px);
+}
+
+.route-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 22px;
+  padding: clamp(28px, 4vw, 36px) clamp(22px, 3vw, 32px);
+  box-shadow: var(--shadow-sm);
+  min-height: 470px;
+}
+
+.route-card-icon {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--primary-accent);
+  background: var(--primary-accent-light);
+  border: 2px solid var(--primary-accent-tint);
+}
+
+.route-card h3 {
+  margin: 0 0 18px;
+  color: var(--text-primary);
+  font-size: clamp(2rem, 3vw, 3.15rem);
+  line-height: 1.12;
+  letter-spacing: -0.05em;
+  font-weight: 700;
+}
+
+.route-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.route-card li {
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 1.8vw, 1.05rem);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  word-break: break-word;
+}
+
+.route-card li + li {
+  margin-top: 1px;
+}
 
 .visit-section { background: var(--primary-accent); color: #fff; overflow: hidden; }
 .visit-layout { display: grid; grid-template-columns: 1fr 0.87fr; align-items: stretch; gap: clamp(35px, 8vw, 100px); min-height: 460px; }

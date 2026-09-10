@@ -1,11 +1,26 @@
-import { ArrowRight, BookOpen, CalendarDays, ImageIcon, MapPin, Sparkles } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarDays, FileText, ImageIcon, MapPin, Sparkles, Target } from "lucide-react"
 import { Link } from "react-router-dom"
 
-const programs = [
-  "Kutubxonashunoslik va bibliografiya",
-  "Dasturiy injiniring",
-  "Maktabgacha ta'lim tarbiyachisi",
-  "Maktabgacha ta'lim musiqa rahbari",
+const routeCards = [
+  {
+    icon: FileText,
+    title: "Yo'nalishlar",
+    items: [
+      "50320203 – Kutubxonashunoslik va bibliografiya",
+      "50610201 – Dasturiy injiniring",
+      "40110104 – Maktabgacha ta'lim muassasasi tarbiyachisi",
+      "40110104 – Maktabgacha ta'lim muassasasi yordamchi tarbiyachisi",
+      "40110201 – Maktabgacha ta'lim muassasasi musiqa rahbari",
+    ],
+  },
+  {
+    icon: Target,
+    title: "Dual-ta'lim yo'nalishlari",
+    items: [
+      "40110104 – Maktabgacha ta'lim muassasasi tarbiyachisi",
+      "40110201 – Maktabgacha ta'lim muassasasi musiqa rahbari",
+    ],
+  },
 ]
 
 const Home = () => {
@@ -42,18 +57,19 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="programs-section container">
-        <div className="section-intro">
-          <span className="eyebrow">Yo'nalishlar</span>
-          <h2>Kasb tanlang.<br /><span>Kelajak yarating.</span></h2>
-          <p>Har bir yo'nalish nazariya va amaliyotni birlashtirib, sizni mehnat bozoriga tayyorlaydi.</p>
-        </div>
-        <div className="program-list">
-          {programs.map((program, index) => (
-            <article className="program-item" key={program}>
-              <span className="program-number">0{index + 1}</span>
-              <h3>{program}</h3>
-              <ArrowRight size={21} />
+      <section className="route-cards-section">
+        <div className="container route-cards-grid">
+          {routeCards.map(({ icon: Icon, title, items }) => (
+            <article className="route-card" key={title}>
+              <div className="route-card-icon">
+                <Icon size={42} strokeWidth={2.2} />
+              </div>
+              <h3>{title}</h3>
+              <ul>
+                {items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </article>
           ))}
         </div>
