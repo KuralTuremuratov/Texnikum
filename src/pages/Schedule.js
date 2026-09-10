@@ -69,11 +69,11 @@ const Schedule = () => {
           {course1Schedule.map((row) => (
             <tr key={row.id}>
               <td style={{ whiteSpace: "pre-line" }}>{row.day}</td>
-              <td style={{ whiteSpace: "pre-line" }}>{row.para1}</td>
-              <td style={{ whiteSpace: "pre-line" }}>{row.para2}</td>
-              <td style={{ whiteSpace: "pre-line" }}>{row.para3}</td>
-              <td style={{ whiteSpace: "pre-line" }}>{row.para4}</td>
-              <td style={{ whiteSpace: "pre-line" }}>{row.para5 || "-"}</td> {/* Добавлено отображение 5-para */}
+              <td style={{ whiteSpace: "pre-line" }} data-label="Dushanba">{row.para1}</td>
+              <td style={{ whiteSpace: "pre-line" }} data-label="Seshanba">{row.para2}</td>
+              <td style={{ whiteSpace: "pre-line" }} data-label="Chorshanba">{row.para3}</td>
+              <td style={{ whiteSpace: "pre-line" }} data-label="Payshanba">{row.para4}</td>
+              <td style={{ whiteSpace: "pre-line" }} data-label="Juma">{row.para5 || "-"}</td> {/* Добавлено отображение 5-para */}
             </tr>
           ))}
         </tbody>
@@ -95,11 +95,11 @@ const Schedule = () => {
           {course2Schedule.map((row) => (
             <tr key={row.id}>
               <td style={{ whiteSpace: "pre-line" }}>{row.day}</td>
-              <td style={{ whiteSpace: "pre-line" }}>{row.para1}</td>
-              <td style={{ whiteSpace: "pre-line" }}>{row.para2}</td>
-              <td style={{ whiteSpace: "pre-line" }}>{row.para3}</td>
-              <td style={{ whiteSpace: "pre-line" }}>{row.para4}</td>
-              <td style={{ whiteSpace: "pre-line" }}>{row.para5 || "-"}</td> {/* Добавлено отображение 5-para */}
+              <td style={{ whiteSpace: "pre-line" }} data-label="Dushanba">{row.para1}</td>
+              <td style={{ whiteSpace: "pre-line" }} data-label="Seshanba">{row.para2}</td>
+              <td style={{ whiteSpace: "pre-line" }} data-label="Chorshanba">{row.para3}</td>
+              <td style={{ whiteSpace: "pre-line" }} data-label="Payshanba">{row.para4}</td>
+              <td style={{ whiteSpace: "pre-line" }} data-label="Juma">{row.para5 || "-"}</td> {/* Добавлено отображение 5-para */}
             </tr>
           ))}
         </tbody>
