@@ -36,32 +36,34 @@ const TeacherSchedule = () => {
   return (
     <main className="container content-section">
       <h2>Navbatchilik jadvali</h2>
-      <table className="teacher-schedule">
-        <thead>
-          <tr>
-            <th>O'qituvchi</th>
-            <th>Dushanba</th>
-            <th>Seshanba</th>
-            <th>Chorshanba</th>
-            <th>Payshanba</th>
-            <th>Juma</th>
-            <th>Shanba</th>
-          </tr>
-        </thead>
-        <tbody>
-          {teacherSchedule.map((row) => (
-            <tr key={row.id}>
-              <td style={{ whiteSpace: "pre-line" }}>{row.teacher}</td>
-              <td style={{ whiteSpace: "pre-line" }} data-label="Dushanba">{row.dushanba}</td>
-              <td style={{ whiteSpace: "pre-line" }} data-label="Seshanba">{row.seshanba}</td>
-              <td style={{ whiteSpace: "pre-line" }} data-label="Chorshanba">{row.chorshanba}</td>
-              <td style={{ whiteSpace: "pre-line" }} data-label="Payshanba">{row.payshanba}</td>
-              <td style={{ whiteSpace: "pre-line" }} data-label="Juma">{row.juma}</td>
-              <td style={{ whiteSpace: "pre-line" }} data-label="Shanba">{row.shanba}</td>
+      <div className="schedule-wrapper">
+        <table className="teacher-schedule">
+          <thead>
+            <tr>
+              <th>O'qituvchi</th>
+              <th>Dushanba</th>
+              <th>Seshanba</th>
+              <th>Chorshanba</th>
+              <th>Payshanba</th>
+              <th>Juma</th>
+              <th>Shanba</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {teacherSchedule.map((row) => (
+              <tr key={row.id}>
+                <td style={{ whiteSpace: "pre-line" }}>{row.teacher}</td>
+                <td style={{ whiteSpace: "pre-line" }} data-label="Dushanba">{row.dushanba}</td>
+                <td style={{ whiteSpace: "pre-line" }} data-label="Seshanba">{row.seshanba}</td>
+                <td style={{ whiteSpace: "pre-line" }} data-label="Chorshanba">{row.chorshanba}</td>
+                <td style={{ whiteSpace: "pre-line" }} data-label="Payshanba">{row.payshanba}</td>
+                <td style={{ whiteSpace: "pre-line" }} data-label="Juma">{row.juma}</td>
+                <td style={{ whiteSpace: "pre-line" }} data-label="Shanba">{row.shanba}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </main>
   )
 }

@@ -480,18 +480,14 @@ h2::before {
 
 /* ==========================================================================
    TABLES: NAVBATCHILIK & DARS JADVALI
-   Fully Adaptive Responsive Tables (Zero Viewport Overflow)
+   Wrapper handles scroll, table stays as real table for correct column alignment
    ========================================================================== */
 
-.teacher-schedule,
-.course-schedule {
-  display: block;
+/* Scroll wrapper - handles overflow */
+.schedule-wrapper {
   width: 100%;
-  max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border-collapse: separate;
-  border-spacing: 0;
   margin: 16px 0 clamp(28px, 5vw, 44px);
   background: var(--card-bg);
   border-radius: var(--radius-lg);
@@ -501,50 +497,68 @@ h2::before {
   scrollbar-color: var(--primary-accent) var(--bg-secondary);
 }
 
-.teacher-schedule::-webkit-scrollbar,
-.course-schedule::-webkit-scrollbar {
+.schedule-wrapper::-webkit-scrollbar {
   height: 6px;
 }
 
-.teacher-schedule::-webkit-scrollbar-track,
-.course-schedule::-webkit-scrollbar-track {
+.schedule-wrapper::-webkit-scrollbar-track {
   background: var(--bg-secondary);
   border-radius: 3px;
 }
 
-.teacher-schedule::-webkit-scrollbar-thumb,
-.course-schedule::-webkit-scrollbar-thumb {
+.schedule-wrapper::-webkit-scrollbar-thumb {
   background: var(--border-subtle);
   border-radius: 3px;
 }
 
-.teacher-schedule::-webkit-scrollbar-thumb:hover,
-.course-schedule::-webkit-scrollbar-thumb:hover {
+.schedule-wrapper::-webkit-scrollbar-thumb:hover {
   background: var(--primary-accent);
 }
 
-.teacher-schedule thead,
-.teacher-schedule tbody,
-.course-schedule thead,
-.course-schedule tbody {
-  display: table;
+/* Real tables - columns always aligned */
+.teacher-schedule {
   width: 100%;
-  min-width: 640px;
+  min-width: 750px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
 }
 
+.course-schedule {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+/* Explicit column widths — first column wider for name, rest equal */
+.course-schedule th:first-child,
+.course-schedule td:first-child {
+  width: 22%;
+}
+
+.teacher-schedule th:first-child,
+.teacher-schedule td:first-child {
+  width: 20%;
+}
+
+/* Header cells */
 .teacher-schedule th,
 .course-schedule th {
   background: var(--table-th-bg);
   color: var(--primary-accent);
   font-weight: 700;
-  font-size: clamp(0.78rem, 1.1vw, 0.85rem);
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: clamp(12px, 1.6vw, 16px) clamp(12px, 1.8vw, 18px);
+  letter-spacing: 0.03em;
+  padding: 12px 10px;
   text-align: left;
   border-bottom: 2px solid var(--primary-accent);
   border-right: 1px solid var(--border-subtle);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .teacher-schedule th:last-child,
@@ -552,17 +566,19 @@ h2::before {
   border-right: none;
 }
 
+/* Body cells */
 .teacher-schedule td,
 .course-schedule td {
-  padding: clamp(10px, 1.4vw, 14px) clamp(12px, 1.8vw, 18px);
+  padding: 12px 10px;
   border-bottom: 1px solid var(--border-subtle);
   border-right: 1px solid var(--border-subtle);
-  font-size: clamp(0.85rem, 1.15vw, 0.92rem);
+  font-size: 0.88rem;
   color: var(--text-primary);
   line-height: 1.5;
   vertical-align: middle;
   transition: background 0.15s ease;
   word-break: break-word;
+  overflow: hidden;
 }
 
 .teacher-schedule td:last-child,
@@ -586,6 +602,8 @@ h2::before {
 .course-schedule tbody tr:hover {
   background: var(--table-hover-bg);
 }
+
+
 
 /* ==========================================================================
    FOTO: PHOTO GALLERY
@@ -1211,12 +1229,19 @@ h2::before {
     width: 100%;
   }
   /* ---- Mobile Card Layout for Schedule Tables ---- */
-  .teacher-schedule,
-  .course-schedule {
+  .schedule-wrapper {
     border: none;
     background: transparent;
     box-shadow: none;
     overflow: visible;
+    margin: 16px 0 clamp(28px, 5vw, 44px);
+  }
+
+  .teacher-schedule,
+  .course-schedule {
+    min-width: 0;
+    width: 100%;
+    table-layout: auto;
   }
 
   .teacher-schedule thead,
@@ -1229,7 +1254,6 @@ h2::before {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    min-width: 0;
     width: 100%;
   }
 
@@ -1254,6 +1278,7 @@ h2::before {
     border-bottom: 1px solid var(--border-subtle);
     font-size: 0.9rem;
     word-break: break-word;
+    width: 100%;
   }
 
   .teacher-schedule tbody tr td:last-child,
@@ -1289,6 +1314,7 @@ h2::before {
     margin-right: 12px;
   }
 }
+
 
 /* Very Small Mobile Screens (max-width: 380px) */
 @media (max-width: 380px) {
