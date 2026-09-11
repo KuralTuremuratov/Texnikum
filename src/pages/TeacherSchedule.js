@@ -1,11 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 import { supabase } from "../lib/supabase"
+import { Search, Users } from "lucide-react"
 
 const TeacherSchedule = () => {
   const [teacherSchedule, setTeacherSchedule] = useState([])
   const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     loadTeacherSchedule()
@@ -25,6 +28,11 @@ const TeacherSchedule = () => {
     }
   }
 
+  // Фильтрация по поиску
+  const filteredSchedule = teacherSchedule.filter(row => 
+    row.teacher?.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   if (loading) {
     return (
       <main className="container content-section">
@@ -35,9 +43,40 @@ const TeacherSchedule = () => {
 
   return (
     <main className="container content-section">
-      <h2>Navbatchilik jadvali</h2>
+      {/* Breadcrumbs */}
+      <nav className="breadcrumbs">
+        <Link to="/">Bosh sahifa</Link>
+        <span className="breadcrumb-separator">/</span>
+        <span className="breadcrumb-current">Navbatchilik jadvali</span>
+      </nav>
+
+      <h2><Users size={28} />Navbatchilik jadvali</h2>
+      <p className="section-description">
+        O'qituvchilar konsultatsiya jadvali — har kuni kim navbatchi ekanligini ko'ring
+      </p>
+
+      {/* Поиск */}
+      <div className="schedule-controls">
+        <div className="search-box">
+          <Search size={20} />
+          <input
+            type="text"
+            placeholder="O'qituvchi nomi bo'yicha qidirish..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+        </div>
+      </div>
+
+      {searchQuery && (
+        <div className="search-results-info">
+          <p>Topildi: <strong>{filteredSchedule.length}</strong> o'qituvchi</p>
+        </div>
+      )}
+
       <div className="schedule-wrapper">
-        <table className="teacher-schedule">
+        <table className="teacher-schedule enhanced">
           <thead>
             <tr>
               <th>O'qituvchi</th>
@@ -50,8 +89,8 @@ const TeacherSchedule = () => {
             </tr>
           </thead>
           <tbody>
-            {teacherSchedule.map((row) => (
-              <tr key={row.id}>
+            {filteredSchedule.map((row, idx) => (
+              <tr key={row.id} className={idx % 2 === 0 ? 'even-row' : 'odd-row'}>
                 <td>{row.teacher}</td>
                 <td data-label="Dushanba">{row.dushanba}</td>
                 <td data-label="Seshanba">{row.seshanba}</td>
@@ -64,6 +103,12 @@ const TeacherSchedule = () => {
           </tbody>
         </table>
       </div>
+
+      {filteredSchedule.length === 0 && (
+        <div className="no-results">
+          <p>Hech qanday o'qituvchi topilmadi.</p>
+        </div>
+      )}
     </main>
   )
 }

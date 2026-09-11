@@ -31,14 +31,31 @@ const Home = () => {
         <div className="hero-orbit orbit-two" />
         <div className="container hero-layout">
           <div className="hero-copy">
-            <span className="eyebrow"><Sparkles size={16} /> Kasb sari dadil qadam</span>
-            <h1>Kelajagingiz uchun <em>mustahkam</em> ta'lim.</h1>
-            <p>Xo'jayli xizmat ko'rsatish va servis texnikumi — bilim, amaliyot va yangi imkoniyatlar makoni.</p>
+            <span className="eyebrow"><Sparkles size={16} /> Kasbga qadam qo'ying</span>
+            <h1>Kelajagingiz uchun <em>mustahkam</em> bilim va ko'nikma.</h1>
+            <p>Xo'jayli xizmat ko'rsatish va servis texnikumi — 2 yillik o'qish, amaliy mashg'ulotlar va kafolatlangan ish bilan ta'minlash.</p>
+            
+            {/* Статистика */}
+            <div className="hero-stats">
+              <div className="stat-item">
+                <strong>1200+</strong>
+                <span>Talabalar</span>
+              </div>
+              <div className="stat-item">
+                <strong>95%</strong>
+                <span>Ishga joylashish</span>
+              </div>
+              <div className="stat-item">
+                <strong>5</strong>
+                <span>Yo'nalishlar</span>
+              </div>
+            </div>
+
             <div className="hero-actions">
               <Link to="/schedule" className="button button-primary">Dars jadvali <ArrowRight size={18} /></Link>
               <Link to="/gallery" className="button button-secondary">Texnikum hayoti</Link>
             </div>
-            <div className="hero-note"><span>01</span> Zamonaviy kasblar, real natijalar</div>
+            <div className="hero-note"><span>01</span> Amaliy bilim, haqiqiy natijalar</div>
           </div>
           <div className="hero-visual">
             <div className="hero-sun" />
