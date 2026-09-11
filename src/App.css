@@ -1329,17 +1329,41 @@ h2::before {
     border-bottom: none;
   }
 
-  /* First cell (group name / teacher name) as card header */
+  /* First cell (group name / teacher name) as card header - horizontal layout */
   .teacher-schedule tbody tr td:first-child,
   .course-schedule tbody tr td:first-child {
     background: var(--primary-accent);
     color: #fff;
     font-weight: 700;
     font-size: 0.93rem;
-    padding: 11px 14px;
+    padding: 13px 18px;
     justify-content: center;
     text-align: center;
-    white-space: normal;
+    white-space: nowrap;
+    min-height: 52px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  }
+
+  /* Scrollbar for header cell if text is too long */
+  .teacher-schedule tbody tr td:first-child::-webkit-scrollbar,
+  .course-schedule tbody tr td:first-child::-webkit-scrollbar {
+    height: 3px;
+  }
+
+  .teacher-schedule tbody tr td:first-child::-webkit-scrollbar-track,
+  .course-schedule tbody tr td:first-child::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .teacher-schedule tbody tr td:first-child::-webkit-scrollbar-thumb,
+  .course-schedule tbody tr td:first-child::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
   }
 
   .teacher-schedule tbody tr td:first-child::before,
