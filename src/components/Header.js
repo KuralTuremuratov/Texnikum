@@ -28,7 +28,6 @@ const Header = () => {
           {navigation.map(({ path, label }) => (
             <Link key={path} to={path} onClick={closeMenu} className={location.pathname === path ? "active" : ""}>{label}</Link>
           ))}
-          <Link to="/login" onClick={closeMenu} className="nav-admin">Admin kirish</Link>
         </nav>
 
         <div className="header-actions">
