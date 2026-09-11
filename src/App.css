@@ -483,36 +483,41 @@ h2::before {
    Wrapper handles scroll, table stays as real table for correct column alignment
    ========================================================================== */
 
-/* Scroll wrapper - handles overflow */
+/* Scroll wrapper - handles overflow only on narrow screens */
 .schedule-wrapper {
   width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: visible;
   margin: 16px 0 clamp(28px, 5vw, 44px);
   background: var(--card-bg);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-sm);
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-accent) var(--bg-secondary);
 }
 
-.schedule-wrapper::-webkit-scrollbar {
-  height: 6px;
-}
+/* Enable scroll only if content is wider than container */
+@media (max-width: 1200px) {
+  .schedule-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .schedule-wrapper::-webkit-scrollbar {
+    height: 6px;
+  }
 
-.schedule-wrapper::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-  border-radius: 3px;
-}
+  .schedule-wrapper::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 3px;
+  }
 
-.schedule-wrapper::-webkit-scrollbar-thumb {
-  background: var(--border-subtle);
-  border-radius: 3px;
-}
+  .schedule-wrapper::-webkit-scrollbar-thumb {
+    background: var(--border-subtle);
+    border-radius: 3px;
+  }
 
-.schedule-wrapper::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-accent);
+  .schedule-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-accent);
+  }
 }
 
 /* Real tables - columns always aligned */
@@ -980,12 +985,19 @@ h2::before {
 
 /* Desktop Table View */
 .table-container {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: visible;
   background: var(--card-bg);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-sm);
+}
+
+/* Enable scroll only on narrow screens */
+@media (max-width: 1024px) {
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .admin-table {
