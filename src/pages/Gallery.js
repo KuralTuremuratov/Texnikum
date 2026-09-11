@@ -64,6 +64,11 @@ const Gallery = () => {
     }
   }
 
+  // Фильтрация по категориям (ПЕРЕМЕСТИЛ ВЫШЕ)
+  const filteredImages = selectedCategory === "all" 
+    ? images 
+    : images.filter(img => img.category === selectedCategory)
+
   // Открыть lightbox
   const openLightbox = (index) => {
     setCurrentImageIndex(index)
@@ -100,11 +105,6 @@ const Gallery = () => {
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [lightboxOpen, filteredImages.length])
-
-  // Фильтрация по категориям
-  const filteredImages = selectedCategory === "all" 
-    ? images 
-    : images.filter(img => img.category === selectedCategory)
 
   if (loading) {
     return (
