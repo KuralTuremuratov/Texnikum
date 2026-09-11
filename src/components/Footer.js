@@ -59,7 +59,6 @@ const Footer = () => (
 
     <div className="container footer-bottom">
       <p>© {new Date().getFullYear()} Xo'jayli Texnikumi. Barcha huquqlar himoyalangan.</p>
-      <Link to="/login" className="admin-link">Admin kirish</Link>
     </div>
   </footer>
 )
