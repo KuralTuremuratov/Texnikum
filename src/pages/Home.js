@@ -33,22 +33,6 @@ const Home = () => {
           <div className="hero-copy">
             <span className="eyebrow"><Sparkles size={16} /> Kasbga qadam qo'ying</span>
             <h1>Kelajagingiz uchun <em>mustahkam</em> bilim va ko'nikma.</h1>
-            
-            {/* Статистика */}
-            <div className="hero-stats">
-              <div className="stat-item">
-                <strong>1200+</strong>
-                <span>Talabalar</span>
-              </div>
-              <div className="stat-item">
-                <strong>95%</strong>
-                <span>Ishga joylashish</span>
-              </div>
-              <div className="stat-item">
-                <strong>5</strong>
-                <span>Yo'nalishlar</span>
-              </div>
-            </div>
 
             <div className="hero-actions">
               <Link to="/schedule" className="button button-primary">Dars jadvali <ArrowRight size={18} /></Link>
