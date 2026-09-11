@@ -14,6 +14,10 @@ const Footer = () => (
           </div>
         </div>
 
+        <div className="footer-message">
+          <h3>Yangi imkoniyatlar sizni kutmoqda.</h3>
+        </div>
+
         <div className="footer-links">
           <Link to="/schedule">Dars jadvali</Link>
           <Link to="/teacher-schedule">Navbatchilik</Link>

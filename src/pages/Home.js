@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, CalendarDays, FileText, ImageIcon, MapPin, Sparkles, Target } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarDays, FileText, ImageIcon, Sparkles, Target } from "lucide-react"
 import { Link } from "react-router-dom"
 
 const routeCards = [
@@ -92,17 +92,6 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="visit-section">
-        <div className="container visit-layout">
-          <div>
-            <span className="eyebrow"><MapPin size={16} /> Bizning manzil</span>
-            <h2>Yangi imkoniyatlar<br />sizni kutmoqda.</h2>
-            <p>Xo'jayli tumani, Bag'man MFY, Buyuk kelajak ko'chasi.</p>
-            <a className="text-link" href="tel:+998551062067">+998 55 106 20 67 <ArrowRight size={17} /></a>
-          </div>
-          <img src="/2.jpg" alt="Texnikum o'quv muhiti" />
-        </div>
-      </section>
     </main>
   )
 }
