@@ -52,13 +52,13 @@ const TeacherSchedule = () => {
           <tbody>
             {teacherSchedule.map((row) => (
               <tr key={row.id}>
-                <td style={{ whiteSpace: "pre-line" }}>{row.teacher}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Dushanba">{row.dushanba}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Seshanba">{row.seshanba}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Chorshanba">{row.chorshanba}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Payshanba">{row.payshanba}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Juma">{row.juma}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Shanba">{row.shanba}</td>
+                <td>{row.teacher}</td>
+                <td data-label="Dushanba">{row.dushanba}</td>
+                <td data-label="Seshanba">{row.seshanba}</td>
+                <td data-label="Chorshanba">{row.chorshanba}</td>
+                <td data-label="Payshanba">{row.payshanba}</td>
+                <td data-label="Juma">{row.juma}</td>
+                <td data-label="Shanba">{row.shanba}</td>
               </tr>
             ))}
           </tbody>

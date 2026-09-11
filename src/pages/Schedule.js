@@ -63,18 +63,18 @@ const Schedule = () => {
               <th>Seshanba</th>
               <th>Chorshanba</th>
               <th>Payshanba</th>
-              <th>Juma</th> {/* Добавлен заголовок 5-para */}
+              <th>Juma</th>
             </tr>
           </thead>
           <tbody>
             {course1Schedule.map((row) => (
               <tr key={row.id}>
-                <td style={{ whiteSpace: "pre-line" }}>{row.day}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Dushanba">{row.para1}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Seshanba">{row.para2}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Chorshanba">{row.para3}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Payshanba">{row.para4}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Juma">{row.para5 || "-"}</td>
+                <td>{row.day}</td>
+                <td data-label="Dushanba">{row.para1}</td>
+                <td data-label="Seshanba">{row.para2}</td>
+                <td data-label="Chorshanba">{row.para3}</td>
+                <td data-label="Payshanba">{row.para4}</td>
+                <td data-label="Juma">{row.para5 || "-"}</td>
               </tr>
             ))}
           </tbody>
@@ -97,12 +97,12 @@ const Schedule = () => {
           <tbody>
             {course2Schedule.map((row) => (
               <tr key={row.id}>
-                <td style={{ whiteSpace: "pre-line" }}>{row.day}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Dushanba">{row.para1}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Seshanba">{row.para2}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Chorshanba">{row.para3}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Payshanba">{row.para4}</td>
-                <td style={{ whiteSpace: "pre-line" }} data-label="Juma">{row.para5 || "-"}</td>
+                <td>{row.day}</td>
+                <td data-label="Dushanba">{row.para1}</td>
+                <td data-label="Seshanba">{row.para2}</td>
+                <td data-label="Chorshanba">{row.para3}</td>
+                <td data-label="Payshanba">{row.para4}</td>
+                <td data-label="Juma">{row.para5 || "-"}</td>
               </tr>
             ))}
           </tbody>
