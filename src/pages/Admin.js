@@ -385,17 +385,17 @@ const Admin = () => {
                         />
                       ) : (
                         <>
-                          <td>{schedule.course_number}</td>
-                          <td>{schedule.day}</td>
-                          <td>{schedule.para1}</td>
-                          <td>{schedule.para2}</td>
-                          <td>{schedule.para3}</td>
-                          <td>{schedule.para4}</td>
-                          <td>{schedule.para5 || "-"}</td> {/* Отображение para5 */}
+                          <td data-label="Kurs">{schedule.course_number}</td>
+                          <td data-label="Kun">{schedule.day}</td>
+                          <td data-label="1-para">{schedule.para1}</td>
+                          <td data-label="2-para">{schedule.para2}</td>
+                          <td data-label="3-para">{schedule.para3}</td>
+                          <td data-label="4-para">{schedule.para4}</td>
+                          <td data-label="5-para">{schedule.para5 || "-"}</td>
                           <td>
                             <div className="action-buttons">
-                              <button onClick={() => setEditingCourse(schedule.id)} className="edit-btn"><Edit size={16} /></button>
-                              <button onClick={() => deleteCourseSchedule(schedule.id)} className="delete-btn"><Trash2 size={16} /></button>
+                              <button onClick={() => setEditingCourse(schedule.id)} className="edit-btn"><Edit size={16} />Tahrirlash</button>
+                              <button onClick={() => deleteCourseSchedule(schedule.id)} className="delete-btn"><Trash2 size={16} />O'chirish</button>
                             </div>
                           </td>
                         </>
@@ -447,17 +447,17 @@ const Admin = () => {
                         />
                       ) : (
                         <>
-                          <td>{schedule.teacher}</td>
-                          <td>{schedule.dushanba}</td>
-                          <td>{schedule.seshanba}</td>
-                          <td>{schedule.chorshanba}</td>
-                          <td>{schedule.payshanba}</td>
-                          <td>{schedule.juma}</td>
-                          <td>{schedule.shanba}</td>
+                          <td data-label="O'qituvchi">{schedule.teacher}</td>
+                          <td data-label="Dushanba">{schedule.dushanba}</td>
+                          <td data-label="Seshanba">{schedule.seshanba}</td>
+                          <td data-label="Chorshanba">{schedule.chorshanba}</td>
+                          <td data-label="Payshanba">{schedule.payshanba}</td>
+                          <td data-label="Juma">{schedule.juma}</td>
+                          <td data-label="Shanba">{schedule.shanba}</td>
                           <td>
                             <div className="action-buttons">
-                              <button onClick={() => setEditingTeacher(schedule.id)} className="edit-btn"><Edit size={16} /></button>
-                              <button onClick={() => deleteTeacherSchedule(schedule.id)} className="delete-btn"><Trash2 size={16} /></button>
+                              <button onClick={() => setEditingTeacher(schedule.id)} className="edit-btn"><Edit size={16} />Tahrirlash</button>
+                              <button onClick={() => deleteTeacherSchedule(schedule.id)} className="delete-btn"><Trash2 size={16} />O'chirish</button>
                             </div>
                           </td>
                         </>
@@ -559,7 +559,7 @@ const EditableCourseRow = ({ schedule, onSave, onCancel }) => {
 
   return (
     <>
-      <td>
+      <td data-label="Kurs">
         <input
           type="number"
           value={formData.course_number}
@@ -568,38 +568,38 @@ const EditableCourseRow = ({ schedule, onSave, onCancel }) => {
           max="4"
         />
       </td>
-      <td>
+      <td data-label="Kun">
         <input type="text" value={formData.day} onChange={(e) => setFormData({ ...formData, day: e.target.value })} />
       </td>
-      <td>
+      <td data-label="1-para">
         <textarea
           rows={3}
           value={formData.para1}
           onChange={(e) => setFormData({ ...formData, para1: e.target.value })}
         />
       </td>
-      <td>
+      <td data-label="2-para">
         <textarea
           rows={3}
           value={formData.para2}
           onChange={(e) => setFormData({ ...formData, para2: e.target.value })}
         />
       </td>
-      <td>
+      <td data-label="3-para">
         <textarea
           rows={3}
           value={formData.para3}
           onChange={(e) => setFormData({ ...formData, para3: e.target.value })}
         />
       </td>
-      <td>
+      <td data-label="4-para">
         <textarea
           rows={3}
           value={formData.para4}
           onChange={(e) => setFormData({ ...formData, para4: e.target.value })}
         />
       </td>
-      <td>
+      <td data-label="5-para">
         <textarea
           rows={3}
           value={formData.para5}
@@ -609,10 +609,10 @@ const EditableCourseRow = ({ schedule, onSave, onCancel }) => {
       <td>
         <div className="action-buttons">
           <button onClick={handleSave} className="save-btn">
-            <Save size={16} />
+            <Save size={16} />Saqlash
           </button>
           <button onClick={onCancel} className="cancel-btn">
-            <X size={16} />
+            <X size={16} />Bekor qilish
           </button>
         </div>
       </td>
@@ -637,49 +637,49 @@ const EditableTeacherRow = ({ schedule, onSave, onCancel }) => {
 
   return (
     <>
-      <td>
+      <td data-label="O'qituvchi">
         <textarea
-          rows={3} // Устанавливаем количество строк, например, 3
+          rows={3}
           value={formData.teacher}
           onChange={(e) => setFormData({ ...formData, teacher: e.target.value })}
         />
       </td>
-      <td>
+      <td data-label="Dushanba">
         <input
           type="text"
           value={formData.dushanba}
           onChange={(e) => setFormData({ ...formData, dushanba: e.target.value })}
         />
       </td>
-      <td>
+      <td data-label="Seshanba">
         <input
           type="text"
           value={formData.seshanba}
           onChange={(e) => setFormData({ ...formData, seshanba: e.target.value })}
         />
       </td>
-      <td>
+      <td data-label="Chorshanba">
         <input
           type="text"
           value={formData.chorshanba}
           onChange={(e) => setFormData({ ...formData, chorshanba: e.target.value })}
         />
       </td>
-      <td>
+      <td data-label="Payshanba">
         <input
           type="text"
           value={formData.payshanba}
           onChange={(e) => setFormData({ ...formData, payshanba: e.target.value })}
         />
       </td>
-      <td>
+      <td data-label="Juma">
         <input
           type="text"
           value={formData.juma}
           onChange={(e) => setFormData({ ...formData, juma: e.target.value })}
         />
       </td>
-      <td>
+      <td data-label="Shanba">
         <input
           type="text"
           value={formData.shanba}
@@ -689,10 +689,10 @@ const EditableTeacherRow = ({ schedule, onSave, onCancel }) => {
       <td>
         <div className="action-buttons">
           <button onClick={handleSave} className="save-btn">
-            <Save size={16} />
+            <Save size={16} />Saqlash
           </button>
           <button onClick={onCancel} className="cancel-btn">
-            <X size={16} />
+            <X size={16} />Bekor qilish
           </button>
         </div>
       </td>
