@@ -1416,8 +1416,9 @@ h2::before {
     font-size: 1.2rem;
   }
 }
-  }
 
+/* Touch Device Optimizations - keeping legacy styles */
+@media (max-width: 380px) {
   .gallery-header {
     font-size: 1.45rem;
   }
