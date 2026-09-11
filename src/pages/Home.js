@@ -33,7 +33,6 @@ const Home = () => {
           <div className="hero-copy">
             <span className="eyebrow"><Sparkles size={16} /> Kasbga qadam qo'ying</span>
             <h1>Kelajagingiz uchun <em>mustahkam</em> bilim va ko'nikma.</h1>
-            <p>Xo'jayli xizmat ko'rsatish va servis texnikumi — 2 yillik o'qish, amaliy mashg'ulotlar va kafolatlangan ish bilan ta'minlash.</p>
             
             {/* Статистика */}
             <div className="hero-stats">

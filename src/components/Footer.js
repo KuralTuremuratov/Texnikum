@@ -53,15 +53,6 @@ const Footer = () => (
             referrerPolicy="no-referrer-when-downgrade"
             title="Xo'jayli texnikumi manzili"
           ></iframe>
-          <a 
-            href="https://maps.app.goo.gl/f2yPCx89byCNGbDC8" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="map-overlay-link"
-          >
-            <MapPin size={16} />
-            Google Maps'da ochish
-          </a>
         </div>
       </div>
     </div>
