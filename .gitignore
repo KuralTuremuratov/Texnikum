@@ -19,6 +19,7 @@
 .env.test.local
 .env.production.local
 NETLIFY_ENV_VALUES.txt
+QUICK_DEPLOY_GUIDE.md
 
 npm-debug.log*
 yarn-debug.log*
