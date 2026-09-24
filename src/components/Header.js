@@ -5,6 +5,7 @@ import { useTheme } from "../contexts/ThemeContext"
 
 const navigation = [
   { path: "/", label: "Bosh sahifa" },
+  { path: "/xodimlar", label: "Xodimlar" },
   { path: "/teacher-schedule", label: "Navbatchilik" },
   { path: "/schedule", label: "Dars jadvali" },
   { path: "/gallery", label: "Foto galereya" },
@@ -21,7 +22,7 @@ const Header = () => {
       <div className="container site-header-inner">
         <Link to="/" className="brand" onClick={closeMenu} aria-label="Bosh sahifa">
           <span className="brand-mark"><img src="/logo.png" alt="" /></span>
-          <span className="brand-text"><strong>Xo'jayli</strong><small>Xizmat ko'rsatish va servis texnikumi</small></span>
+          <span className="brand-text"><strong>Xo'jayli tumani</strong><small>3-sonli texnikumi</small></span>
         </Link>
 
         <nav className={`site-nav ${isMenuOpen ? "is-open" : ""}`} aria-label="Asosiy menyu">

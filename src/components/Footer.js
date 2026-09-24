@@ -9,8 +9,8 @@ const Footer = () => (
         <div className="footer-brand">
           <img src="/logo.png" alt="Texnikum logotipi" />
           <div>
-            <p className="footer-brand-name">Xo'jayli texnikumi</p>
-            <p className="footer-brand-subtitle">Xizmat ko'rsatish va servis</p>
+            <p className="footer-brand-name">Xo'jayli tumani 3-sonli texnikumi</p>
+            <p className="footer-brand-subtitle">O'mir dawaminda bilim al!</p>
           </div>
         </div>
 
@@ -29,9 +29,25 @@ const Footer = () => (
             <Phone size={18} />
             <span>+998 55 106 20 67</span>
           </a>
+          <a href="tel:+998907007867" className="contact-item">
+            <Phone size={18} />
+            <span>+998 90 700 78 67</span>
+          </a>
+          <a href="tel:+998913715025" className="contact-item">
+            <Phone size={18} />
+            <span>+998 91 371 50 25</span>
+          </a>
+          <a href="tel:+998913051287" className="contact-item">
+            <Phone size={18} />
+            <span>+998 91 305 12 87</span>
+          </a>
           <div className="contact-item">
             <MapPin size={18} />
-            <span>Xo'jayli tumani, Bag'man MFY, Buyuk kelajak ko'chasi</span>
+            <span>Xo'jayli tumani, Bog'bon MFY, Buyuk kelajak ko'chasi 19-uy</span>
+          </div>
+          <div className="contact-item">
+            <MapPin size={18} />
+            <small style={{ opacity: 0.8 }}>Mo'ljal: Nukus–Xo'jayli yo'li bo'yida</small>
           </div>
         </div>
       </div>
@@ -58,7 +74,7 @@ const Footer = () => (
     </div>
 
     <div className="container footer-bottom">
-      <p>© {new Date().getFullYear()} Xo'jayli Texnikumi. Barcha huquqlar himoyalangan.</p>
+      <p>© {new Date().getFullYear()} Xo'jayli tumani 3-sonli texnikumi. Barcha huquqlar himoyalangan.</p>
     </div>
   </footer>
 )

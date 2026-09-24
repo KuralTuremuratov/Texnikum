@@ -9,6 +9,7 @@ import Home from "./pages/Home"
 import Schedule from "./pages/Schedule"
 import TeacherSchedule from "./pages/TeacherSchedule"
 import Gallery from "./pages/Gallery"
+import Xodimlar from "./pages/Xodimlar"
 import Login from "./pages/Login"
 import Admin from "./pages/Admin"
 import "./App.css"
@@ -66,6 +67,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/teacher-schedule" element={<TeacherSchedule />} />
+            <Route path="/xodimlar" element={<Xodimlar />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/login" element={<Login />} />
             <Route

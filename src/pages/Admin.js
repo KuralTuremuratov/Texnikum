@@ -11,9 +11,11 @@ const Admin = () => {
   const [courseSchedules, setCourseSchedules] = useState([])
   const [teacherSchedules, setTeacherSchedules] = useState([])
   const [galleryImages, setGalleryImages] = useState([])
+  const [employees, setEmployees] = useState([])
   const [editingCourse, setEditingCourse] = useState(null)
   const [editingTeacher, setEditingTeacher] = useState(null)
   const [editingImage, setEditingImage] = useState(null)
+  const [editingEmployee, setEditingEmployee] = useState(null)
   const [activeTab, setActiveTab] = useState("courses")
   const [uploadingImage, setUploadingImage] = useState(false)
   const navigate = useNavigate()
@@ -67,6 +69,13 @@ const Admin = () => {
         .order("uploaded_at", { ascending: false })
       if (galleryError) console.error("Galereya rasmlari xatoligi:", galleryError)
       else setGalleryImages(galleryData || [])
+
+      const { data: employeesData, error: employeesError } = await supabase
+        .from("employees")
+        .select("*")
+        .order("display_order", { ascending: true })
+      if (employeesError) console.error("Xodimlar xatoligi:", employeesError)
+      else setEmployees(employeesData || [])
     } catch (error) {
       console.error("Ma'lumotlarni yuklashda xatolik:", error)
     }
@@ -322,6 +331,75 @@ const Admin = () => {
     }
   }
 
+  // EMPLOYEES CRUD FUNCTIONS
+  const addEmployee = async () => {
+    try {
+      const newEmployee = {
+        name: "Yangi xodim",
+        position: "Lavozim",
+        photo_url: "",
+        is_active: true,
+        display_order: employees.length + 1,
+      }
+      const { data, error } = await supabase.from("employees").insert([newEmployee]).select()
+      if (error) throw error
+      setEmployees((prev) => [...prev, data[0]])
+      setEditingEmployee(data[0].id)
+      alert("Yangi xodim qo'shildi! Endi ma'lumotlarni tahrirlang.")
+    } catch (error) {
+      console.error("Xodim qo'shishda xatolik:", error)
+      alert("Xodim qo'shishda xatolik: " + error.message)
+    }
+  }
+
+  const updateEmployee = async (id, updatedData) => {
+    try {
+      const { error } = await supabase.from("employees").update(updatedData).eq("id", id)
+      if (error) throw error
+      setEmployees((prev) => prev.map((item) => (item.id === id ? { ...item, ...updatedData } : item)))
+      setEditingEmployee(null)
+      alert("Xodim muvaffaqiyatli yangilandi!")
+    } catch (error) {
+      console.error("Xodimni yangilashda xatolik:", error)
+      alert("Xodimni yangilashda xatolik: " + error.message)
+    }
+  }
+
+  const deleteEmployee = async (id) => {
+    if (!window.confirm("Bu xodimni o'chirishni xohlaysizmi?")) return
+    try {
+      const { error } = await supabase.from("employees").delete().eq("id", id)
+      if (error) throw error
+      setEmployees((prev) => prev.filter((item) => item.id !== id))
+      alert("Xodim muvaffaqiyatli o'chirildi!")
+    } catch (error) {
+      console.error("Xodimni o'chirishda xatolik:", error)
+      alert("Xodimni o'chirishda xatolik: " + error.message)
+    }
+  }
+
+  const handleEmployeePhotoUpload = async (event, employeeId) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    try {
+      setUploadingImage(true)
+      const fileName = `employee_${employeeId}_${Date.now()}.jpg`
+      const { data, error } = await supabase.storage.from("texnikum-gallery").upload(fileName, file)
+      
+      if (error) throw error
+
+      const photo_url = data.publicUrl
+      await updateEmployee(employeeId, { photo_url })
+      alert("Foto muvaffaqiyatli yuklandi!")
+    } catch (error) {
+      console.error("Foto yuklashda xatolik:", error)
+      alert("Foto yuklashda xatolik: " + error.message)
+    } finally {
+      setUploadingImage(false)
+    }
+  }
+
   if (loading) {
     return <div className="container content-section"><div className="loading">Kirish huquqini tekshirish...</div></div>
   }
@@ -344,6 +422,7 @@ const Admin = () => {
       <div className="admin-tabs">
         <button className={`tab-btn ${activeTab === "courses" ? "active" : ""}`} onClick={() => setActiveTab("courses")}>Kurs jadvallari</button>
         <button className={`tab-btn ${activeTab === "teachers" ? "active" : ""}`} onClick={() => setActiveTab("teachers")}>Navbatchilik jadvallari</button>
+        <button className={`tab-btn ${activeTab === "employees" ? "active" : ""}`} onClick={() => setActiveTab("employees")}>Xodimlar</button>
         <button className={`tab-btn ${activeTab === "gallery" ? "active" : ""}`} onClick={() => setActiveTab("gallery")}>Foto galereya</button>
       </div>
 
@@ -467,6 +546,56 @@ const Admin = () => {
                 )}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {activeTab === "employees" && (
+        <div className="admin-section">
+          <div className="section-header">
+            <h3>Xodimlar ({employees.length})</h3>
+            <button onClick={addEmployee} className="add-btn"><Plus size={16} />Xodim qo'shish</button>
+          </div>
+          <div className="employees-admin-grid">
+            {employees.length === 0 ? (
+              <div className="empty-state">
+                <p>Xodimlar ro'yxati bo'sh. Birinchi xodimni qo'shing.</p>
+              </div>
+            ) : (
+              employees.map((employee) => (
+                <div key={employee.id} className={`employee-admin-card ${!employee.is_active ? "inactive" : ""}`}>
+                  {editingEmployee === employee.id ? (
+                    <EditableEmployeeCard
+                      employee={employee}
+                      onSave={(data) => updateEmployee(employee.id, data)}
+                      onCancel={() => setEditingEmployee(null)}
+                      onPhotoUpload={(e) => handleEmployeePhotoUpload(e, employee.id)}
+                      uploadingImage={uploadingImage}
+                    />
+                  ) : (
+                    <>
+                      <div className="employee-admin-photo">
+                        <img
+                          src={employee.photo_url || "/placeholder-employee.jpg"}
+                          alt={employee.name}
+                          onError={(e) => { e.target.src = "/placeholder-employee.jpg" }}
+                        />
+                        {!employee.is_active && <div className="inactive-overlay">Faol emas</div>}
+                      </div>
+                      <div className="employee-admin-info">
+                        <h4>{employee.name}</h4>
+                        <p>{employee.position}</p>
+                        <small>Tartib: {employee.display_order}</small>
+                      </div>
+                      <div className="employee-admin-actions">
+                        <button onClick={() => setEditingEmployee(employee.id)} className="edit-btn"><Edit size={14} /></button>
+                        <button onClick={() => deleteEmployee(employee.id)} className="delete-btn"><Trash2 size={14} /></button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))
+            )}
           </div>
         </div>
       )}
@@ -740,6 +869,79 @@ const EditableImageCard = ({ image, onSave, onCancel }) => {
             onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
           />
           Faol (galereyada ko'rsatish)
+        </label>
+        <div className="editing-actions">
+          <button onClick={handleSave} className="save-btn">
+            <Save size={14} /> Saqlash
+          </button>
+          <button onClick={onCancel} className="cancel-btn">
+            <X size={14} /> Bekor qilish
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const EditableEmployeeCard = ({ employee, onSave, onCancel, onPhotoUpload, uploadingImage }) => {
+  const [formData, setFormData] = useState({
+    name: employee.name,
+    position: employee.position,
+    is_active: employee.is_active,
+    display_order: employee.display_order,
+  })
+
+  const handleSave = () => {
+    onSave(formData)
+  }
+
+  return (
+    <div className="editing-employee-card">
+      <div className="employee-admin-photo">
+        <img
+          src={employee.photo_url || "/placeholder-employee.jpg"}
+          alt={employee.name}
+          onError={(e) => { e.target.src = "/placeholder-employee.jpg" }}
+        />
+        <label className="photo-upload-label">
+          <Upload size={16} />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={onPhotoUpload}
+            disabled={uploadingImage}
+            style={{ display: "none" }}
+          />
+          {uploadingImage ? "Yuklanmoqda..." : "Foto yuklash"}
+        </label>
+      </div>
+      <div className="editing-form">
+        <input
+          type="text"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          placeholder="FIO"
+        />
+        <input
+          type="text"
+          value={formData.position}
+          onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+          placeholder="Lavozim"
+        />
+        <input
+          type="number"
+          value={formData.display_order}
+          onChange={(e) => setFormData({ ...formData, display_order: Number.parseInt(e.target.value) })}
+          placeholder="Tartib raqami"
+          min="1"
+        />
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.is_active}
+            onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+          />
+          Faol (saytda ko'rsatish)
         </label>
         <div className="editing-actions">
           <button onClick={handleSave} className="save-btn">

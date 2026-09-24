@@ -1,24 +1,35 @@
-import { ArrowRight, BookOpen, CalendarDays, FileText, ImageIcon, Sparkles, Target } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarDays, GraduationCap, Users, Briefcase, ImageIcon, Sparkles } from "lucide-react"
 import { Link } from "react-router-dom"
 
 const routeCards = [
   {
-    icon: FileText,
-    title: "Yo'nalishlar",
+    icon: GraduationCap,
+    title: "11-sinf bitiruvchilari uchun qabul yo'nalishlari",
+    subtitle: "Oliy o'quv yurtiga suhbat asosida 2-kursdan boshlab qabul qilinish imkoniyati bilan",
     items: [
-      "50320203 – Kutubxonashunoslik va bibliografiya",
-      "50610201 – Dasturiy injiniring",
-      "40110104 – Maktabgacha ta'lim muassasasi tarbiyachisi",
-      "40110104 – Maktabgacha ta'lim muassasasi yordamchi tarbiyachisi",
-      "40110201 – Maktabgacha ta'lim muassasasi musiqa rahbari",
+      "50610203 – Dasturiy injiniring",
     ],
   },
   {
-    icon: Target,
-    title: "Dual-ta'lim yo'nalishlari",
+    icon: Users,
+    title: "9-sinf bitiruvchilari uchun qabul yo'nalishlari",
     items: [
-      "40110104 – Maktabgacha ta'lim muassasasi tarbiyachisi",
-      "40110201 – Maktabgacha ta'lim muassasasi musiqa rahbari",
+      "30610105 – Grafika va dizayn texnologiyasi",
+      "30730311 – Qurilish materiallarini ishlab chiqarish operatori",
+      "30710311 – Qayta tiklanuvchi energiya manbalariga xizmat ko'rsatish",
+      "30730207 – Turar-joy infratuzilmasi",
+      "30730310 – Bino va qurilish pardozlash ustasi",
+      "30711605 – Avtomobil servisi",
+    ],
+  },
+  {
+    icon: Briefcase,
+    title: "Dual ta'lim turiga qabul",
+    subtitle: "Haftada 2 kun o'qib, 4 kun ish joyida ishlashni davom ettirish imkoniyati bilan",
+    items: [
+      "50320203 – Kutubxonashunoslik va bibliografiya",
+      "40711616 – Avtomobil servis texnigi",
+      "50730202 – Qurilish materiallarini ishlab chiqarish texnigi (turlari bo'yicha)",
     ],
   },
 ]
@@ -42,7 +53,7 @@ const Home = () => {
           </div>
           <div className="hero-visual">
             <div className="hero-sun" />
-            <img src="/1.jpg" alt="Xo'jayli xizmat ko'rsatish va servis texnikumi binosi" />
+            <img src="/homepage_main.jpg" alt="Xo'jayli tumani 3-sonli texnikumi binosi" />
             <div className="hero-card hero-card-top"><span>Amaliy</span><strong>ta'lim</strong></div>
             <div className="hero-card hero-card-bottom"><span>Bugun</span><strong>kelajakni quring</strong></div>
           </div>
@@ -59,12 +70,13 @@ const Home = () => {
 
       <section className="route-cards-section">
         <div className="container route-cards-grid">
-          {routeCards.map(({ icon: Icon, title, items }) => (
+          {routeCards.map(({ icon: Icon, title, subtitle, items }) => (
             <article className="route-card" key={title}>
               <div className="route-card-icon">
                 <Icon size={42} strokeWidth={2.2} />
               </div>
               <h3>{title}</h3>
+              {subtitle && <p className="route-card-subtitle">{subtitle}</p>}
               <ul>
                 {items.map((item) => (
                   <li key={item}>{item}</li>

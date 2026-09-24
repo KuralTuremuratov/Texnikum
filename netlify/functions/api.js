@@ -5,6 +5,7 @@ const TABLES = {
   course_schedules: ['course_number', 'day', 'para1', 'para2', 'para3', 'para4', 'para5'],
   teacher_schedules: ['teacher', 'dushanba', 'seshanba', 'chorshanba', 'payshanba', 'juma', 'shanba'],
   gallery_images: ['title', 'description', 'image_url', 'image_path', 'is_active'],
+  employees: ['name', 'position', 'photo_url', 'is_active', 'display_order'],
 };
 
 function db() {
