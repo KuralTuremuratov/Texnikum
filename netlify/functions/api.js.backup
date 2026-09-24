@@ -30,6 +30,9 @@ function authenticated(headers) {
   if (signature.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return false;
   try { return JSON.parse(Buffer.from(body, 'base64url').toString()).exp > Math.floor(Date.now() / 1000); } catch { return false; }
 }
+function passwordMatches(password) {
+  return passwordMatchesHash(password, process.env.ADMIN_PASSWORD_HASH);
+}
 function passwordMatchesHash(password, storedHash) {
   const [kind, salt, digest] = (storedHash || '').split(':');
   if (kind !== 'scrypt' || !salt || !digest) return false;
@@ -61,7 +64,6 @@ function safeFields(table, values) {
   return Object.fromEntries(Object.entries(values || {}).filter(([key]) => allowed.includes(key)));
 }
 
-// 🔒 НОВАЯ ФУНКЦИЯ: Rate Limiting
 function checkRateLimit(email) {
   const key = (email || '').toLowerCase().trim();
   if (!key) throw new Error('Email is required');
@@ -90,98 +92,48 @@ function checkRateLimit(email) {
   }
 }
 
-// 🔒 НОВАЯ ФУНКЦИЯ: Валидация Email
 function validateEmail(email) {
-  if (!email || typeof email !== 'string') return false;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
-}
-
-// 🔒 НОВАЯ ФУНКЦИЯ: Валидация входных данных
-function validateInput(input) {
-  // Ограничение на длину строк
-  const maxStringLength = 5000;
-  
-  for (const [key, value] of Object.entries(input)) {
-    if (typeof value === 'string' && value.length > maxStringLength) {
-      throw new Error(`Field ${key} exceeds maximum length`);
-    }
-  }
 }
 
 exports.handler = async (event) => {
   try {
     const input = event.body ? JSON.parse(event.body) : {};
     const { action, table, id, values, filters = {}, order } = input;
-    
-    // Валидация входных данных
-    validateInput(input);
-    
     const client = db();
 
-    // 🔒 LOGIN с Rate Limiting и Валидацией
     if (action === 'login') {
-      // Rate limiting
-      try {
-        checkRateLimit(input.email);
-      } catch (error) {
-        return response(429, { error: error.message });
-      }
-      
-      // Валидация email
-      if (!validateEmail(input.email)) {
-        return response(400, { error: 'Неверный формат email' });
-      }
-      
       const admins = [
         { email: process.env.ADMIN_EMAIL, hash: process.env.ADMIN_PASSWORD_HASH },
         { email: process.env.ADMIN_EMAIL_2, hash: process.env.ADMIN_PASSWORD_HASH_2 },
       ];
       const admin = admins.find((candidate) => candidate.email && candidate.email.toLowerCase() === String(input.email || '').toLowerCase());
-      if (!admin || !passwordMatchesHash(input.password || '', admin.hash)) {
-        return response(401, { error: 'Email yoki parol noto'g'ri.' });
-      }
-      
+      if (!admin || !passwordMatchesHash(input.password || '', admin.hash)) return response(401, { error: 'Email yoki parol noto‘g‘ri.' });
       const now = Math.floor(Date.now() / 1000);
-      return response(200, { 
-        token: sign({ sub: admin.email, iat: now, exp: now + 60 * 60 * 8 }), 
-        user: { email: admin.email } 
-      });
+      return response(200, { token: sign({ sub: admin.email, iat: now, exp: now + 60 * 60 * 8 }), user: { email: admin.email } });
     }
-    
-    if (action === 'session') {
-      return authenticated(event.headers) 
-        ? response(200, { user: { email: process.env.ADMIN_EMAIL } }) 
-        : response(401, { error: 'Unauthorized' });
-    }
+    if (action === 'session') return authenticated(event.headers) ? response(200, { user: { email: process.env.ADMIN_EMAIL } }) : response(401, { error: 'Unauthorized' });
 
     if (action === 'select') {
       if (!TABLES[table]) return response(400, { error: 'Unknown table.' });
       const clauses = [], args = [];
       for (const [key, value] of Object.entries(filters)) {
         if (!(TABLES[table].includes(key) || key === 'id')) return response(400, { error: 'Invalid filter.' });
-        args.push(value); 
-        clauses.push(`${key} = $${args.length}`);
+        args.push(value); clauses.push(`${key} = $${args.length}`);
       }
       const orderColumn = TABLES[table].includes(order?.column) || order?.column === 'id' || order?.column === 'uploaded_at' ? order.column : 'id';
       const rows = await client.query(`SELECT * FROM ${table}${clauses.length ? ` WHERE ${clauses.join(' AND ')}` : ''} ORDER BY ${orderColumn} ${order?.ascending === false ? 'DESC' : 'ASC'}`, args);
       return response(200, { data: rows });
     }
 
-    // 🔒 Все остальные действия требуют авторизации
-    if (!authenticated(event.headers)) {
-      return response(401, { error: 'Unauthorized' });
-    }
-    
+    if (!authenticated(event.headers)) return response(401, { error: 'Unauthorized' });
     if (action === 'imagekit_auth') return response(200, imageKitAuth());
-    
     if (action === 'delete_image') {
       await removeImageKitFile(String(input.fileId || ''));
       return response(200, { data: [] });
     }
-    
     if (!TABLES[table]) return response(400, { error: 'Unknown table.' });
-    
     if (action === 'insert') {
       const fields = safeFields(table, values);
       const names = Object.keys(fields);
@@ -189,24 +141,19 @@ exports.handler = async (event) => {
       const rows = await client.query(`INSERT INTO ${table} (${names.join(', ')}) VALUES (${names.map((_, index) => `$${index + 1}`).join(', ')}) RETURNING *`, Object.values(fields));
       return response(200, { data: rows });
     }
-    
     if (action === 'update') {
-      const fields = safeFields(table, values);
-      const names = Object.keys(fields);
+      const fields = safeFields(table, values), names = Object.keys(fields);
       if (!names.length || !Number.isInteger(id)) return response(400, { error: 'Invalid update.' });
       await client.query(`UPDATE ${table} SET ${names.map((name, index) => `${name} = $${index + 1}`).join(', ')} WHERE id = $${names.length + 1}`, [...Object.values(fields), id]);
       return response(200, { data: [] });
     }
-    
     if (action === 'delete' && Number.isInteger(id)) {
       await client.query(`DELETE FROM ${table} WHERE id = $1`, [id]);
       return response(200, { data: [] });
     }
-    
     return response(400, { error: 'Unknown action.' });
   } catch (error) {
-    console.error('API Error:', error);
-    // 🔒 НЕ раскрываем детали ошибок в production
-    return response(500, { error: 'Server error. Please try again later.' });
+    console.error(error);
+    return response(500, { error: 'Server error. Check Netlify environment variables.' });
   }
 };
