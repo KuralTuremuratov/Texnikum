@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Users } from "lucide-react"
 import { supabase } from "../lib/supabase"
+import Loader from "../components/Loader"
 
 const Xodimlar = () => {
   const [employees, setEmployees] = useState([])
@@ -47,7 +48,7 @@ const Xodimlar = () => {
       </div>
 
       {loading ? (
-        <div className="loading">Yuklanmoqda...</div>
+        <Loader />
       ) : employees.length === 0 ? (
         <div className="empty-state">
           <Users size={48} />

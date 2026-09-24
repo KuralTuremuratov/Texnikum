@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { ArrowLeft, X, ChevronLeft, ChevronRight, Filter } from "lucide-react"
 import { supabase } from "../lib/supabase"
+import Loader from "../components/Loader"
 
 const Gallery = () => {
   const [images, setImages] = useState([])
@@ -110,7 +111,7 @@ const Gallery = () => {
     return (
       <main className="content-section">
         <div className="container">
-          <div className="loading">Yuklanmoqda...</div>
+          <Loader />
         </div>
       </main>
     )

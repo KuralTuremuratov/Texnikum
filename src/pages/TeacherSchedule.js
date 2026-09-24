@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { supabase } from "../lib/supabase"
 import { Search, Users } from "lucide-react"
+import Loader from "../components/Loader"
 
 const TeacherSchedule = () => {
   const [teacherSchedule, setTeacherSchedule] = useState([])
@@ -36,7 +37,7 @@ const TeacherSchedule = () => {
   if (loading) {
     return (
       <main className="container content-section">
-        <div className="loading">Yuklanmoqda...</div>
+        <Loader />
       </main>
     )
   }

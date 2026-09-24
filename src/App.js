@@ -1,6 +1,6 @@
 "use client"
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { ThemeProvider } from "./contexts/ThemeContext"
 import Header from "./components/Header"
@@ -12,6 +12,7 @@ import Gallery from "./pages/Gallery"
 import Xodimlar from "./pages/Xodimlar"
 import Login from "./pages/Login"
 import Admin from "./pages/Admin"
+import Loader from "./components/Loader"
 import "./App.css"
 import { supabase } from "./lib/supabase"
 
@@ -49,12 +50,43 @@ const ProtectedRoute = ({ children }) => {
   if (loading) {
     return (
       <div className="container" style={{ padding: "60px 20px", textAlign: "center" }}>
-        <div className="loading">Проверка доступа...</div>
+        <Loader />
       </div>
     )
   }
 
   return isAuthenticated ? children : <Navigate to="/login" replace />
+}
+
+// Компонент для отображения Loader при смене маршрута
+const RouteChangeLoader = () => {
+  const location = useLocation()
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+    const timer = setTimeout(() => setLoading(false), 300)
+    return () => clearTimeout(timer)
+  }, [location.pathname])
+
+  if (!loading) return null
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      zIndex: 9999,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}>
+      <Loader />
+    </div>
+  )
 }
 
 function App() {
@@ -63,6 +95,7 @@ function App() {
       <Router>
         <div className="App">
           <Header />
+          <RouteChangeLoader />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/schedule" element={<Schedule />} />
