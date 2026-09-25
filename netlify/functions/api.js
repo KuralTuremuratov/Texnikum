@@ -139,7 +139,7 @@ exports.handler = async (event) => {
       ];
       const admin = admins.find((candidate) => candidate.email && candidate.email.toLowerCase() === String(input.email || '').toLowerCase());
       if (!admin || !passwordMatchesHash(input.password || '', admin.hash)) {
-        return response(401, { error: 'Email yoki parol noto'g'ri.' });
+        return response(401, { error: "Email yoki parol noto'g'ri." });
       }
       
       const now = Math.floor(Date.now() / 1000);
