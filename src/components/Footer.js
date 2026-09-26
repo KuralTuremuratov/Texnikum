@@ -10,7 +10,6 @@ const Footer = () => (
           <img src="/logo.png" alt="Texnikum logotipi" />
           <div>
             <p className="footer-brand-name">Xo'jayli tumani 3-sonli texnikumi</p>
-            <p className="footer-brand-subtitle">O'mir dawaminda bilim al!</p>
           </div>
         </div>
 

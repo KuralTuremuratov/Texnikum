@@ -2278,8 +2278,22 @@ body.dark-theme .eyebrow { color: #ffc092; }
     padding-bottom: 36px;
   }
 
+  /* Карта на мобильных - улучшенное отображение */
+  .footer-map {
+    order: 2; /* Карта после контактов */
+    width: 100%;
+  }
+
   .map-container {
-    height: 260px;
+    height: 280px; /* Увеличена высота для мобильных */
+    border-radius: 12px;
+    overflow: hidden; /* Обрезаем края */
+  }
+
+  .map-container iframe {
+    width: 100%;
+    height: 100%;
+    display: block; /* Убираем gap снизу */
   }
 
   .footer-bottom {
