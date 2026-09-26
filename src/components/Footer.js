@@ -59,7 +59,7 @@ const Footer = () => (
         </div>
         <div className="map-container">
           <iframe
-            src="https://maps.google.com/maps?q=42.434583,59.504972&hl=uz&z=15&output=embed"
+            src="https://maps.google.com/maps?q=CGM3%2BRX5+Xo%CA%BBjayli+Qoraqalpog%CA%BBiston&hl=uz&z=16&output=embed"
             width="100%"
             height="100%"
             style={{ border: 0, borderRadius: "12px" }}
