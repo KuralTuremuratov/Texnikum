@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { ArrowLeft, X, ChevronLeft, ChevronRight, Filter } from "lucide-react"
+import { ArrowLeft, X, ChevronLeft, ChevronRight } from "lucide-react"
 import { supabase } from "../lib/supabase"
 import Loader from "../components/Loader"
 
@@ -11,16 +11,6 @@ const Gallery = () => {
   const [loading, setLoading] = useState(true)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [selectedCategory, setSelectedCategory] = useState("all")
-  
-  // Категории для фильтрации
-  const categories = [
-    { id: "all", label: "Barchasi" },
-    { id: "events", label: "Tadbirlar" },
-    { id: "students", label: "Talabalar" },
-    { id: "building", label: "Bino va auditoriyalar" },
-    { id: "achievements", label: "Yutuqlar" },
-  ]
 
   useEffect(() => {
     loadImages()
@@ -39,12 +29,12 @@ const Gallery = () => {
         console.error("Error loading images:", error)
         // Fallback к статическим изображениям если база данных недоступна
         setImages([
-          { id: 1, title: "Texnikum binosi", description: "Asosiy o'quv binosi", image_url: "/01.jpg", category: "building" },
-          { id: 2, title: "Talabalar", description: "O'quv jarayoni", image_url: "/02.jpg", category: "students" },
-          { id: 3, title: "Ochilish marosimi", description: "Yangi o'quv yili", image_url: "/03.jpg", category: "events" },
-          { id: 4, title: "Auditoriya", description: "Zamonaviy sinf xonalari", image_url: "/04.jpg", category: "building" },
-          { id: 5, title: "Sport tadbirlari", description: "Futbol musobaqasi", image_url: "/05.jpg", category: "events" },
-          { id: 6, title: "Diplom topshirish", description: "Bitiruvchilar", image_url: "/06.jpg", category: "achievements" },
+          { id: 1, title: "Texnikum binosi", description: "Asosiy o'quv binosi", image_url: "/01.jpg" },
+          { id: 2, title: "Talabalar", description: "O'quv jarayoni", image_url: "/02.jpg" },
+          { id: 3, title: "Ochilish marosimi", description: "Yangi o'quv yili", image_url: "/03.jpg" },
+          { id: 4, title: "Auditoriya", description: "Zamonaviy sinf xonalari", image_url: "/04.jpg" },
+          { id: 5, title: "Sport tadbirlari", description: "Futbol musobaqasi", image_url: "/05.jpg" },
+          { id: 6, title: "Diplom topshirish", description: "Bitiruvchilar", image_url: "/06.jpg" },
         ])
       } else {
         setImages(data || [])
@@ -53,22 +43,17 @@ const Gallery = () => {
       console.error("Error loading images:", error)
       // Fallback к статическим изображениям
       setImages([
-        { id: 1, title: "Texnikum binosi", description: "Asosiy o'quv binosi", image_url: "/01.jpg", category: "building" },
-        { id: 2, title: "Talabalar", description: "O'quv jarayoni", image_url: "/02.jpg", category: "students" },
-        { id: 3, title: "Ochilish marosimi", description: "Yangi o'quv yili", image_url: "/03.jpg", category: "events" },
-        { id: 4, title: "Auditoriya", description: "Zamonaviy sinf xonalari", image_url: "/04.jpg", category: "building" },
-        { id: 5, title: "Sport tadbirlari", description: "Futbol musobaqasi", image_url: "/05.jpg", category: "events" },
-        { id: 6, title: "Diplom topshirish", description: "Bitiruvchilar", image_url: "/06.jpg", category: "achievements" },
+        { id: 1, title: "Texnikum binosi", description: "Asosiy o'quv binosi", image_url: "/01.jpg" },
+        { id: 2, title: "Talabalar", description: "O'quv jarayoni", image_url: "/02.jpg" },
+        { id: 3, title: "Ochilish marosimi", description: "Yangi o'quv yili", image_url: "/03.jpg" },
+        { id: 4, title: "Auditoriya", description: "Zamonaviy sinf xonalari", image_url: "/04.jpg" },
+        { id: 5, title: "Sport tadbirlari", description: "Futbol musobaqasi", image_url: "/05.jpg" },
+        { id: 6, title: "Diplom topshirish", description: "Bitiruvchilar", image_url: "/06.jpg" },
       ])
     } finally {
       setLoading(false)
     }
   }
-
-  // Фильтрация по категориям (ПЕРЕМЕСТИЛ ВЫШЕ)
-  const filteredImages = selectedCategory === "all" 
-    ? images 
-    : images.filter(img => img.category === selectedCategory)
 
   // Открыть lightbox
   const openLightbox = (index) => {
@@ -85,12 +70,12 @@ const Gallery = () => {
 
   // Следующее фото
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % filteredImages.length)
+    setCurrentImageIndex((prev) => (prev + 1) % images.length)
   }
 
   // Предыдущее фото
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + filteredImages.length) % filteredImages.length)
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
   }
 
   // Обработка клавиш
@@ -99,13 +84,13 @@ const Gallery = () => {
 
     const handleKeyDown = (e) => {
       if (e.key === "Escape") closeLightbox()
-      if (e.key === "ArrowRight") setCurrentImageIndex((prev) => (prev + 1) % filteredImages.length)
-      if (e.key === "ArrowLeft") setCurrentImageIndex((prev) => (prev - 1 + filteredImages.length) % filteredImages.length)
+      if (e.key === "ArrowRight") setCurrentImageIndex((prev) => (prev + 1) % images.length)
+      if (e.key === "ArrowLeft") setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
     }
     
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [lightboxOpen, filteredImages.length])
+  }, [lightboxOpen, images.length])
 
   if (loading) {
     return (
@@ -129,22 +114,8 @@ const Gallery = () => {
 
         <h1 className="gallery-header">Fotogalereya</h1>
 
-        {/* Фильтры по категориям */}
-        <div className="gallery-filters">
-          <Filter size={18} />
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`filter-chip ${selectedCategory === cat.id ? "active" : ""}`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-
         <div className="gallery-grid">
-          {filteredImages.map((image, index) => (
+          {images.map((image, index) => (
             <div 
               key={image.id} 
               className="gallery-item"
@@ -169,9 +140,9 @@ const Gallery = () => {
           ))}
         </div>
 
-        {filteredImages.length === 0 && (
+        {images.length === 0 && (
           <div className="no-images">
-            <p>Bu kategoriyada rasmlar mavjud emas.</p>
+            <p>Rasmlar mavjud emas.</p>
           </div>
         )}
 
@@ -182,7 +153,7 @@ const Gallery = () => {
       </div>
 
       {/* Lightbox */}
-      {lightboxOpen && filteredImages.length > 0 && (
+      {lightboxOpen && images.length > 0 && (
         <div className="lightbox-overlay" onClick={closeLightbox}>
           <button className="lightbox-close" onClick={closeLightbox} aria-label="Yopish">
             <X size={32} />
@@ -198,17 +169,17 @@ const Gallery = () => {
 
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
             <img
-              src={filteredImages[currentImageIndex]?.image_url}
-              alt={filteredImages[currentImageIndex]?.title}
+              src={images[currentImageIndex]?.image_url}
+              alt={images[currentImageIndex]?.title}
               className="lightbox-image"
             />
             <div className="lightbox-caption">
-              <h3>{filteredImages[currentImageIndex]?.title}</h3>
-              {filteredImages[currentImageIndex]?.description && (
-                <p>{filteredImages[currentImageIndex]?.description}</p>
+              <h3>{images[currentImageIndex]?.title}</h3>
+              {images[currentImageIndex]?.description && (
+                <p>{images[currentImageIndex]?.description}</p>
               )}
               <span className="lightbox-counter">
-                {currentImageIndex + 1} / {filteredImages.length}
+                {currentImageIndex + 1} / {images.length}
               </span>
             </div>
           </div>
